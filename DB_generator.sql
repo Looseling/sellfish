@@ -33,12 +33,13 @@ create table mainDB.user
 (
     id              bigint auto_increment
         primary key,
-    first_name      varchar(50)  not null,
-    last_name       varchar(50)  not null,
-    email           varchar(255) null,
-    address         varchar(765) not null,
-    user_comment_id bigint       null,
-    cart_id         bigint       null,
+    first_name      varchar(50)   not null,
+    last_name       varchar(50)   not null,
+    password        varchar(1000) not null,
+    email           varchar(255)  null,
+    address         varchar(765)  not null,
+    user_comment_id bigint        null,
+    cart_id         bigint        null,
     constraint user_pk
         unique (cart_id),
     constraint user_cart_fk
@@ -54,5 +55,4 @@ alter table mainDB.cart
 alter table mainDB.comments
     add constraint comments_user_fk
         foreign key (user_id) references mainDB.user (id);
-
 
