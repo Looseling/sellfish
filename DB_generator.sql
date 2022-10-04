@@ -1,4 +1,4 @@
-create table mainDB.comments
+create table comments
 (
     id            bigint auto_increment
         primary key,
@@ -7,7 +7,7 @@ create table mainDB.comments
     commecnt_text text   null
 );
 
-create table mainDB.fish
+create table fish
 (
     id          bigint auto_increment
         primary key,
@@ -18,18 +18,18 @@ create table mainDB.fish
     description text        null
 );
 
-create table mainDB.cart
+create table cart
 (
     id          bigint auto_increment
         primary key,
     user_id     bigint null,
     item_id     bigint null,
-    item_weight float  not null,
+    item_weight float  null,
     constraint cart_fish_fk
-        foreign key (item_id) references mainDB.fish (id)
+        foreign key (item_id) references fish (id)
 );
 
-create table mainDB.user
+create table user
 (
     id              bigint auto_increment
         primary key,
@@ -40,19 +40,20 @@ create table mainDB.user
     address         varchar(765)  not null,
     user_comment_id bigint        null,
     cart_id         bigint        null,
+    is_admin        tinyint(1)    not null,
     constraint user_pk
         unique (cart_id),
     constraint user_cart_fk
-        foreign key (cart_id) references mainDB.cart (id),
+        foreign key (cart_id) references cart (id),
     constraint user_commecnt_fk
-        foreign key (user_comment_id) references mainDB.comments (id)
+        foreign key (user_comment_id) references comments (id)
 );
 
-alter table mainDB.cart
+alter table cart
     add constraint cart_user_fk
-        foreign key (user_id) references mainDB.user (id);
+        foreign key (user_id) references user (id);
 
-alter table mainDB.comments
+alter table comments
     add constraint comments_user_fk
-        foreign key (user_id) references mainDB.user (id);
+        foreign key (user_id) references user (id);
 
