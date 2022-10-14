@@ -17,7 +17,7 @@ To run API in local network you need:
 ** IP Address choose your IPV4
 *![image](https://user-images.githubusercontent.com/69507148/195845196-b76e60cb-9b15-43f6-b5c8-ecbb6e939bcc.png)
 
-* in browser type http://YOUR IP/fish
+* in browser type http://YOUR_IP/fish
 
 
 
