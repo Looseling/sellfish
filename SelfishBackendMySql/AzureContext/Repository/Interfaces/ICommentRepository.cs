@@ -14,6 +14,8 @@ namespace DataAccess.Interfaces
         public Comment GetComment(int Id);
 
         public bool AddComment(Comment Comment);
+        public bool UpdateComment(Comment Comment); 
+        public bool DeleteComment(int Id);
 
         public bool Save();
     }

@@ -18,6 +18,7 @@ namespace AzureContext
         public int FishAmount { get; set; }
         public double FishPrice { get; set; }
         public string Description { get; set; }
+        public string ImageUrl { get; set; }
 
         public virtual ICollection<CartToFish> CartToFishes { get; set; }
     }

@@ -15,6 +15,10 @@ namespace DataAccess.Interfaces
 
         public bool AddUser(User user);
 
+        public bool UpdateUser(User user);
+
+        public bool DeleteUser(User user);
+
         public bool Save();
     }
 }

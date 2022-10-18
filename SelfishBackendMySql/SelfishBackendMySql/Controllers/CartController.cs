@@ -42,7 +42,7 @@ namespace SelCartBackend.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var Carts = _mapper.Map<List<CartDTO>>(_repository.GetCarts());
+            var Carts = _repository.GetCarts();
 
             if (!ModelState.IsValid)
             {
@@ -90,31 +90,45 @@ namespace SelCartBackend.Controllers
         [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
+            var cart = _context.Carts.FirstOrDefault(c => c.Id == Id);
 
-            var CartToDelete = _context.Carts.FirstOrDefault(o => o.Id == Id);
-            if (CartToDelete == null)
+            if (cart == null)
             {
-                return NotFound("Object to delete is not in DB");
+                return BadRequest();
             }
 
-            _context.Carts.Remove(CartToDelete);
-            _context.SaveChanges();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            return StatusCode(200);
+            if (!_repository.DeleteCart(cart))
+            {
+
+            }
+
+            return Ok("Succesfully Deleted");
         }
 
         [HttpPut]
-        public IActionResult Put(int Id, Cart Cart)
+        public IActionResult Put( int Id, Cart cart)
         {
-            var CartToChange = _context.Carts.FirstOrDefault(o => o.Id == Id);
-
-            if (CartToChange == null)
+            if (cart == null)
             {
-                return NotFound("object to update is not in DB");
+                return BadRequest();
             }
-            _context.SaveChanges();
 
-            return StatusCode(200);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_repository.UpdateCart(cart))
+            {
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Succesfully updated");
         }
     }
 }

@@ -15,6 +15,10 @@ namespace DataAccess.Interfaces
 
         public bool AddCartToFish(CartToFish CartToFish);
 
+        public bool UpdateCartToFish(CartToFish cartToFish);
+
+        public bool DeleteCartToFish(int Id);
+
         public bool Save();
     }
 }

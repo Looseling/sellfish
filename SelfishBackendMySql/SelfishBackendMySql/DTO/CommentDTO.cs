@@ -12,6 +12,5 @@ namespace SelfishBackendMySql.DTO
         public long UserId { get; set; }
         public DateTime CommentDate { get; set; }
         public string CommentText { get; set; }
-
     }
 }

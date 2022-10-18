@@ -39,5 +39,18 @@ namespace DataAccess.Repository
 
             return IsSaved > 0 ? true : false;
         }
+
+        public bool UpdateComment(Comment Comment)
+        {
+            _context.Comments.Add(Comment);
+            return Save();
+        }
+
+        public bool DeleteComment(int Id)
+        {
+            var comment = _context.Comments.FirstOrDefault(o => o.Id == Id);
+            _context.Comments.Remove(comment);
+            return Save();
+        }
     }
 }

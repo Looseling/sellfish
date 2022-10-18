@@ -19,10 +19,12 @@ namespace DataAccess.Repository
         public bool AddFish(Fish fish)
         {
             _context.Fish.Add(fish);
-            Save();
+            Save(); 
 
             return true;
         }
+
+        
 
         public ICollection<Fish> GetManyFish()
         {
@@ -39,6 +41,19 @@ namespace DataAccess.Repository
             var IsSaved = _context.SaveChanges();
 
             return IsSaved > 0 ? true : false;
+        }
+
+        public bool UpdateFish(Fish fish)
+        {
+            _context.Fish.Update(fish);
+            return Save();
+        }
+
+        public bool DeleteFish(int Id)
+        {
+            var fish = _context.Fish.FirstOrDefault(o => o.Id == Id);
+            _context.Fish.Remove(fish);
+            return Save();
         }
     }
 }

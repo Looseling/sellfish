@@ -1,4 +1,5 @@
 using AzureContext;
+using AzureContext.Repository;
 using DataAccess.Interfaces;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +18,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft;
+using System.Text.Json.Serialization;
 
 namespace SelfishBackendMySql
 {
@@ -40,6 +43,10 @@ namespace SelfishBackendMySql
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartToFishRepository, CartToFishRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
+
+            services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

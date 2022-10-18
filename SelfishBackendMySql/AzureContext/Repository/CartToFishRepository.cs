@@ -22,6 +22,11 @@ namespace DataAccess.Repository
             return Save();
         }
 
+        public bool DeleteCartToFish(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public CartToFish GetCartToFish(int Id)
         {
             throw new NotImplementedException();
@@ -36,6 +41,11 @@ namespace DataAccess.Repository
         {
             var IsSaved = _context.SaveChanges();
             return IsSaved > 0 ? true : false;
+        }
+
+        public bool UpdateCartToFish(CartToFish cartToFish)
+        {
+            throw new NotImplementedException();
         }
     }
 }

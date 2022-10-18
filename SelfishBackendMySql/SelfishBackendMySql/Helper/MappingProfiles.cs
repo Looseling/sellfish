@@ -19,11 +19,18 @@ namespace SelfishBackendMySql.Helper
             CreateMap<User, UserDTO>();
             CreateMap<CartToFish, CartToFishDTO>();
             CreateMap<CartToFishDTO, CartToFish>();
+            CreateMap<LocationDTO, Location>();
+            CreateMap<Location, LocationDTO>();
+
 
             CreateMap<Cart, CartDTO>();
             CreateMap<CartDTO, Cart>();
             CreateMap<Comment, CommentDTO>();
             CreateMap<CommentDTO, Comment>();
+
+
+            //test
+
 
 
         }

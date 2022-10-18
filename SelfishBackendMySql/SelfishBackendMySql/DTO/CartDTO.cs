@@ -13,6 +13,5 @@ namespace SelfishBackendMySql.DTO
         public double? ItemWeight { get; set; }
         public double? TotalPrice { get; set; }
         public long UserId { get; set; }
-
     }
 }

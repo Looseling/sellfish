@@ -14,6 +14,8 @@ namespace DataAccess.Interfaces
         public Location GetSingleLocation(int Id);
 
         public bool AddLocation(Location Location);
+        public bool UpdateLocation(Location Location);
+        public bool DeleteLocation(int Id);
 
         public bool Save();
     }

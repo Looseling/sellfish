@@ -28,7 +28,6 @@ namespace AzureContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=mbn.database.windows.net;Database=sellfish_db;user Id=admin_mbn;Password=root1234567890!;");
             }
         }
@@ -127,6 +126,11 @@ namespace AzureContext
                 entity.Property(e => e.FishPrice).HasColumnName("fish_price");
 
                 entity.Property(e => e.FishWeight).HasColumnName("fish_weight");
+
+                entity.Property(e => e.ImageUrl)
+                                   .HasMaxLength(500)
+                                   .IsUnicode(false)
+                                   .HasColumnName("image_url");
             });
 
             modelBuilder.Entity<Location>(entity =>

@@ -1,5 +1,6 @@
 ﻿using AzureContext;
 using DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,9 @@ namespace DataAccess.Repository
 
         public User GetUser(int Id)
         {
-            return _context.Users.FirstOrDefault(o => o.Id == Id);
+            return _context.Users.Include(u => u.Cart)
+                                 .ThenInclude( u => u.CartToFishes).ThenInclude( f => f.Item)
+                                 .FirstOrDefault(o => o.Id == Id);
         }
 
         public bool Save()
@@ -39,6 +42,19 @@ namespace DataAccess.Repository
             var IsSaved = _context.SaveChanges();
 
             return IsSaved > 0 ? true : false;
+        }
+
+        public bool UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            return Save();
+        }
+
+
+        public bool DeleteUser(User user)
+        {
+            _context.Users.Remove(user);
+            return Save();
         }
     }
 }

@@ -15,6 +15,8 @@ namespace DataAccess.Interfaces
 
         public bool AddFish(Fish fish);
 
+        public bool UpdateFish(Fish fish);
+        public bool DeleteFish(int Id);
         public bool Save();
     }
 }

@@ -43,13 +43,14 @@ namespace SelfishBackend.Controllers
         public IActionResult Get()
         {
             var fishs = _mapper.Map<List<FishDTO>>(_repository.GetManyFish());
-         
-            if(!ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             return Ok(fishs);
+            //return Ok("asdfasfd");
         }
 
         [HttpGet("{Id}")]

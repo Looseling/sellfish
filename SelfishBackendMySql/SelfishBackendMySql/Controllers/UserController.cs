@@ -31,7 +31,7 @@ namespace SelfishBackendMySql.Controllers
         public IActionResult Get()
         {
             try
-            {
+            {   
                 return Ok(_context.Users.ToArray());
 
             }
@@ -45,7 +45,13 @@ namespace SelfishBackendMySql.Controllers
 
         public IActionResult Get(int Id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == Id);
+            //var user = _context.Users.FirstOrDefault(x => Id == x.Id);
+            var user = _userRepository.GetUser(Id);
+            //var user = _mapper.Map<GETUser>(_userRepository.GetUser(Id));
+
+            //var getuser = new GETUser();
+
+            //getuser.MapUser(user);
 
             if (user == null)
             {
@@ -88,14 +94,14 @@ namespace SelfishBackendMySql.Controllers
         [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
-            var userDelete = _context.Users.FirstOrDefault(o => o.Id == Id);
+            var user = _context.Users.FirstOrDefault(o => o.Id == Id);
 
-            if (userDelete == null)
+            if (user == null)
             {
                 return BadRequest();
             }
 
-            _context.Users.Remove(userDelete);
+            _context.Users.Remove(user);
             _context.SaveChanges();
          
             return Ok();
@@ -110,6 +116,8 @@ namespace SelfishBackendMySql.Controllers
             {
                 return NotFound("object to update is not in DB");
             }
+
+            _userRepository.DeleteUser(user);
             _context.SaveChanges();
 
             return StatusCode(200);

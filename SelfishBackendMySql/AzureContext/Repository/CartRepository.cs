@@ -28,10 +28,8 @@ namespace DataAccess.Repository
             Cart.User = user;
 
             _context.Carts.Add(Cart);
-            Save();
             
-            
-            return true;
+            return Save();
         }
 
         public ICollection<Cart> GetCarts()
@@ -41,7 +39,7 @@ namespace DataAccess.Repository
 
         public Cart GetCart(int Id)
         {
-            return _context.Carts.FirstOrDefault(o => o.Id == Id);
+            return _context.Carts.FirstOrDefault(o => o.Id == Id);  
         }
 
         public bool Save()
@@ -49,6 +47,18 @@ namespace DataAccess.Repository
             var IsSaved = _context.SaveChanges();
 
             return IsSaved > 0 ? true : false;
+        }
+
+        public bool UpdateCart(Cart Cart)
+        {
+            _context.Carts.Update(Cart);
+            return Save();
+        }
+
+        public bool DeleteCart(Cart Cart)
+        {
+            _context.Carts.Remove(Cart);
+            return Save();
         }
     }
 }

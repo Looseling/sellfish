@@ -32,9 +32,24 @@ namespace AzureContext.Repository
             return _context.Locations.SingleOrDefault( o => o.Id == Id);
         }
 
+        public bool DeleteLocation(int Id)
+        {
+            var Location = _context.Locations.FirstOrDefault(o => o.Id == Id);
+            _context.Locations.Remove(Location);
+            return Save();
+        }
+
         public bool Save()
         {
-            throw new NotImplementedException();
+            var IsSaved = _context.SaveChanges();
+
+            return IsSaved > 0 ? true : false;
+        }
+
+        public bool UpdateLocation(Location Location)
+        {
+            _context.Locations.Update(Location);
+            return Save();
         }
     }
 }

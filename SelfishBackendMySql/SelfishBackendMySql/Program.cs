@@ -23,4 +23,14 @@ namespace SelfishBackendMySql
                     webBuilder.UseStartup<Startup>();
                 });
     }
+
 }
+
+
+//var host = new WebHostBuilder()
+//.UseKestrel()
+//.UseContentRoot(Directory.GetCurrentDirectory())
+//.UseUrls("http://localhost:5000", "http://odin:5000", "http://192.168.1.2:5000")
+//.UseIISIntegration()
+//.UseStartup<Startup>()
+//.Build();

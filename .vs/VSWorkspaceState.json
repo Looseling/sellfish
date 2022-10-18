@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\SelfishBackendMySql",
+    "\\SelfishBackendMySql\\SelfishBackendMySql",
+    "\\SelfishBackendMySql\\SelfishBackendMySql\\Controllers"
+  ],
+  "SelectedNode": "\\SelfishBackendMySql\\SelfishBackendMySql\\Controllers\\UserController.cs",
+  "PreviewInSolutionExplorer": false
+}
