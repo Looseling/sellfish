@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using AzureContext;
 using DataAccess.Interfaces;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SelfishBackendMySql.DTO;
 using System;                                                                                     
@@ -13,30 +17,40 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SelfishBackend.Controllers
 {
+
 
     [ApiController]
     [Route("[controller]")]
     public class FishController : ControllerBase
     {
 
-        private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _environment;
-        private readonly IFishRepository _repository;
-        private readonly sellfish_dbContext _context;
+        public readonly IMapper _mapper;
+        public readonly IWebHostEnvironment _environment;
+        public readonly IFishRepository _repository;
+        public readonly sellfish_dbContext _context;
+        public readonly string _azureBlobConnectionString;
+        public readonly string _azureBlobContainer;
+        public readonly string _azureBlobSite;
+
 
         public FishController(IFishRepository repostiry,
                               IWebHostEnvironment environment,
                               IMapper mapper,
-                              sellfish_dbContext context)
+                              sellfish_dbContext context,
+                               IConfiguration configuration )
         {
             _repository = repostiry;
             _environment = environment;
             _mapper = mapper;
             _context = context;
+            _azureBlobConnectionString = configuration.GetConnectionString("AzureBlobConnectionString");
+            _azureBlobContainer = configuration.GetValue<string>("ImageContainer");
+            _azureBlobSite = configuration.GetValue<string>("ImageBlobSite");
         }
 
         [HttpGet]
@@ -48,9 +62,7 @@ namespace SelfishBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             return Ok(fishs);
-            //return Ok("asdfasfd");
         }
 
         [HttpGet("{Id}")]
@@ -62,41 +74,35 @@ namespace SelfishBackend.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(fish);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] FishDTO fishToCreate)
-        { 
+        public IActionResult Post([FromForm] FileUplaod fileupload)
+        {
+            var fishToCreate = fileupload.fishDTO;
+
             if (fishToCreate == null)
                 return BadRequest(ModelState);
 
-            Fish fish = null;
-
-            try
-            {
-                fish = _repository.GetManyFish().
-                Where(c => c.FishName.Trim().ToUpper() == fishToCreate.FishName.Trim().ToUpper()).FirstOrDefault();
-            }
-            catch (Exception)
-            {
-            }
-            
+            Fish fish = _repository.GetManyFish().
+                        Where(c => c.FishName.Trim().ToUpper() == fishToCreate.FishName.Trim().ToUpper()).FirstOrDefault();
+           
             if (fish != null)
             {
                 ModelState.AddModelError("", "Fish already exist in Db");
-                return StatusCode(422, ModelState); 
+                return StatusCode(422, ModelState);
             }
+            var fishMap = _mapper.Map<Fish>(fishToCreate);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var file = fileupload.files;
 
-            var categoryMap = _mapper.Map<Fish>(fishToCreate);
+            UploadBlob(file);
 
-            if (!_repository.AddFish(categoryMap))
+            fishMap.ImageUrl = _azureBlobSite + file.FileName;
+
+            if (!_repository.AddFish(fishMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving entity");
                 return StatusCode(500, ModelState);
@@ -134,55 +140,40 @@ namespace SelfishBackend.Controllers
 
             return StatusCode(200);
         }
-
-
-        //[NonAction]
-        //public IActionResult Upload(IFormFile file)
-        //{
-        //    try
-        //    {
-        //        var fullPath = GetFilepath();
-        //        if (file.Length > 0)
-        //        {
-        //            var fileName = file.FileName;
-        //            using (var stream = new FileStream(Path.Combine(fullPath,fileName), FileMode.Create))
-        //            {
-        //                file.CopyTo(stream);
-        //            }
-
-        //            var dbPath = $"\\Uploads\\Fish\\{fileName}";
-        //            return Ok(new { dbPath });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex} ");
-        //    }
-        //}
-
-
         [NonAction]
-
-        private string GetFilepath()
+        public bool UploadBlob(IFormFile blob)
         {
-            return this._environment.WebRootPath + "\\Uploads\\Fish\\";
+            BlobContainerClient container = new BlobContainerClient(_azureBlobConnectionString, _azureBlobContainer);
+            try
+            {
+                BlobClient client = container.GetBlobClient(blob.FileName);
+
+                var blobHttpHeader = new BlobHttpHeaders { ContentType = "image/jpg" };
+
+                using (Stream? data = blob.OpenReadStream())
+                {
+
+                    client.Upload(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
+                }
+
+            }
+            //catch (RequestFailedException ex)
+            //   when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
+            //{
+            //    return false;
+            //}
+            catch (RequestFailedException)
+            {
+                return false;
+            }
+            return true;
         }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public class FileUplaod
+    {
+        public int id { get; set; }
+        public IFormFile files { get; set; }
+        public FishDTO fishDTO { get; set; }
     }
 }

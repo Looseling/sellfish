@@ -114,3 +114,9 @@ C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\
 C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\AzureContext.dll
 C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\AzureContext.pdb
 C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\obj\Debug\net5.0\SelfishBackendMySql.csproj.CopyComplete
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\Azure.Core.dll
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\Azure.Storage.Blobs.dll
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\Azure.Storage.Common.dll
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\System.IO.Hashing.dll
+C:\Users\User\source\repos\Sellfish\SelfishBackendMySql\SelfishBackendMySql\bin\Debug\net5.0\System.Memory.Data.dll
